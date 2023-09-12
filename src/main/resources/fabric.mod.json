@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "oneworldfolder",
+	"version": "${version}",
+	"name": "OneWorldFolder",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"LinusDev"
+	],
+	"contact": {
+		"homepage": "https://linusdev.de/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "Apache 2.0",
+	"icon": "assets/oneworldfolder/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"de.linusdev.ExampleMod"
+		],
+		"client": [
+			"de.linusdev.OneWorldFolderModClient"
+		]
+	},
+	"mixins": [
+		"oneworldfolder.mixins.json",
+		{
+			"config": "oneworldfolder.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.22",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
