@@ -3,27 +3,25 @@ package de.linusdev;
 import com.mojang.logging.LogUtils;
 import de.linusdev.data.parser.exceptions.ParseException;
 import de.linusdev.mixin.client.MinecraftClientAccessor;
+import de.linusdev.mixin.client.TitleScreenMixin;
+import de.linusdev.oneworldfolder.ITitleScreenMixin;
 import de.linusdev.oneworldfolder.config.Config;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.event.Event;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.ResourceType;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.storage.LevelStorage;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 public class OneWorldFolderModClient implements ClientModInitializer {
 
+	public static final Identifier OWF_TITLE_SCREEN_IDENTIFIER = new Identifier("oneworldfolder", "titlescreen");
 
 	public static LevelStorage customLevelStorage;
 	public static boolean useCustomLevelStorage;
@@ -33,8 +31,15 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		useCustomLevelStorage = false;
-
 		reloadConfig();
+
+
+		ScreenEvents.AFTER_INIT.register(OWF_TITLE_SCREEN_IDENTIFIER, (client, screen, scaledWidth, scaledHeight) -> {
+			if(screen instanceof TitleScreen) {
+				((ITitleScreenMixin) screen).oneworldfolder$addCustomButton();
+			}
+		});
+		ScreenEvents.AFTER_INIT.addPhaseOrdering(Event.DEFAULT_PHASE, OWF_TITLE_SCREEN_IDENTIFIER);
 	}
 
 	public static void reloadConfig() {

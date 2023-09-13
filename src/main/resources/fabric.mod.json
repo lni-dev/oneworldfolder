@@ -15,15 +15,11 @@
 	"icon": "assets/oneworldfolder/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			"de.linusdev.ExampleMod"
-		],
 		"client": [
 			"de.linusdev.OneWorldFolderModClient"
 		]
 	},
 	"mixins": [
-		"oneworldfolder.mixins.json",
 		{
 			"config": "oneworldfolder.client.mixins.json",
 			"environment": "client"
