@@ -34,18 +34,24 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		useCustomLevelStorage = false;
 
+		reloadConfig();
+	}
+
+	public static void reloadConfig() {
 		try {
 			config = Config.from(getDefaultMinecraftFolder(), MinecraftClient.getInstance().runDirectory.toPath());
 		} catch (IOException | ParseException e) {
 			LogUtils.getLogger().error("Cannot find external saves folder: " + e.getMessage());
 		}
 
-        customLevelStorage = new LevelStorage(
-				config.getExternalMinecraftDirectory().resolve(config.getExternalSavesDirName()),
-				config.getExternalMinecraftDirectory().resolve("backups"),
-				LevelStorage.createSymlinkFinder(config.getExternalMinecraftDirectory().resolve("allowed_symlinks.txt")),
-				((MinecraftClientAccessor)MinecraftClient.getInstance()).getDataFixer()
-		);
+		if(config.isSupportsCustomLevelStorage()) {
+			customLevelStorage = new LevelStorage(
+					config.getExternalMinecraftDirectory().resolve(config.getExternalSavesDirName()),
+					config.getExternalMinecraftDirectory().resolve("backups"),
+					LevelStorage.createSymlinkFinder(config.getExternalMinecraftDirectory().resolve("allowed_symlinks.txt")),
+					((MinecraftClientAccessor)MinecraftClient.getInstance()).getDataFixer()
+			);
+		}
 	}
 
 	public static @Nullable Path getDefaultMinecraftFolder() {

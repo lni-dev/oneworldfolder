@@ -57,7 +57,8 @@ public class Config {
     }
 
     private final @NotNull Path configFile;
-    private boolean supportsCustomLevelStorage = true;
+    private final boolean supportsCustomLevelStorage;
+    private boolean cannotFindMinecraftFolder;
     private boolean autodetectSavesPath = false;
 
     private final Path externalMinecraftDirectory;
@@ -77,13 +78,7 @@ public class Config {
                     if (string == null || string.equals(AUTO_DETECT)) {
                         autodetectSavesPath = true;
                         Path md = OneWorldFolderModClient.getDefaultMinecraftFolder();
-
-                        if(md == null) {
-                            supportsCustomLevelStorage = false;
-                            return null;
-                        }
-
-                        return md.resolve("saves");
+                        return md == null ? null : md.resolve("saves");
                     }
 
                     return Paths.get(string);
@@ -94,10 +89,19 @@ public class Config {
         externalMinecraftDirectory = externalSavesDir == null ? null : externalSavesDir.getParent();
         externalSavesDirName = externalSavesDir == null ? null : externalSavesDir.getFileName().toString();
         priority = data.getNumberAsInt(PRIORITY_KEY, key -> -1);
+
+
+        supportsCustomLevelStorage = !(externalMinecraftDirectory == null || !Files.exists(externalMinecraftDirectory));
+        cannotFindMinecraftFolder = externalMinecraftDirectory == null;
+
     }
 
     public boolean isSupportsCustomLevelStorage() {
         return supportsCustomLevelStorage;
+    }
+
+    public boolean isCannotFindMinecraftFolder() {
+        return cannotFindMinecraftFolder;
     }
 
     public Path getExternalMinecraftDirectory() {
@@ -110,6 +114,10 @@ public class Config {
 
     public int getPriority() {
         return priority;
+    }
+
+    public @NotNull Path getConfigFile() {
+        return configFile;
     }
 
     public Config store() throws IOException {
