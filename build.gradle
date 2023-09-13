@@ -47,15 +47,18 @@ dependencies {
 	implementation "de.linusdev:data:2.1.0"
 }
 
-modrinth {
-	token = modrinthToken // Please use an environment variable for this! The default is `$MODRINTH_TOKEN`.
-	projectId = 'JL35Xbzz' // The ID of your Modrinth project. Slugs will not work.
-	versionNumber = mod_version // The (preferably SemVer) version of the mod. If not specified, it'll use the `version` declaration
-	versionName = 'OneWorldFolder' // The version title. If not specified, it'll use the version number
-	uploadFile = remapJar // Tells Minotaur to use the remapped jar
-	gameVersions = ['1.20.1'] // An array of game versions the version supports
-	loaders = ['fabric'] // Self-explanatory.
+if(project.hasProperty("modrinthToken")) {
+	modrinth {
+		token = modrinthToken // Please use an environment variable for this! The default is `$MODRINTH_TOKEN`.
+		projectId = 'JL35Xbzz' // The ID of your Modrinth project. Slugs will not work.
+		versionNumber = mod_version // The (preferably SemVer) version of the mod. If not specified, it'll use the `version` declaration
+		versionName = 'OneWorldFolder' // The version title. If not specified, it'll use the version number
+		uploadFile = remapJar // Tells Minotaur to use the remapped jar
+		gameVersions = ['1.20.1'] // An array of game versions the version supports
+		loaders = ['fabric'] // Self-explanatory.
+	}
 }
+
 
 processResources {
 	inputs.property "version", project.version
