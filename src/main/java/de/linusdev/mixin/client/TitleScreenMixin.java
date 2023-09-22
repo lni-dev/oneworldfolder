@@ -4,20 +4,14 @@ import de.linusdev.OneWorldFolderModClient;
 import de.linusdev.oneworldfolder.ErrorDialogScreen;
 import de.linusdev.oneworldfolder.ITitleScreenMixin;
 import de.linusdev.oneworldfolder.MySelectWorldScreen;
-import net.minecraft.client.gui.screen.DialogScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.gui.widget.TextIconButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen implements ITitleScreenMixin {
@@ -45,23 +39,17 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
         }
 
         //add one world folder button
-        //background
-        this.addDrawableChild(ButtonWidget.builder(Text.of(""), (button) -> {
-            openMyWorldSelectScreen(true);
-        }).dimensions(x, y, 20, 20).build());
-
-        //icon
-        this.addDrawableChild(
-                new TexturedButtonWidget(
-                        x, y,
-                        20, 20,
-                        -1, -1,
-                        0,
-                        new Identifier("oneworldfolder","textures/gui/icon-1024.png"), 18, 18, (button) -> {
-                    openMyWorldSelectScreen(true);
-                }, Text.of("One World Folder")));
-
-
+        Identifier owfIconId = new Identifier("oneworldfolder","icon/owf-icon-1024");
+       this.addDrawableChild(
+                TextIconButtonWidget.builder(
+                        Text.of(""),
+                        (button) -> openMyWorldSelectScreen(true),
+                        true
+                )
+                        .width(20)
+                        .texture(owfIconId, 18, 18)
+                        .build()
+        ).setPosition(x, y);
     }
 
     @Unique
