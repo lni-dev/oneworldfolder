@@ -1,4 +1,4 @@
-# oneworldfolder
+# One World Folder
 
 A minecraft fabric mod, that allows minecraft to access the default `saves` folder located in `.minecraft`. To open the world select screen click on the OneWorldFolder icon next to the Singleplayer button.
 
