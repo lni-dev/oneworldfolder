@@ -1,16 +1,9 @@
 # oneworldfolder
 
-A minecraft fabric mod, that allows minecraft to access the default `saves` folder located in `.minecraft`. 
-
-## Config Location
-There are two possible locations for this config file:
-- `.minecraft/config/oneworldfolder/oneworldfolder.json`
-- `currentMinecraftInstanceFolder/config/oneworldfolder/oneworldfolder.json`
-
-The config with the highest priority will be used.
+A minecraft fabric mod, that allows minecraft to access the default `saves` folder located in `.minecraft`. To open the world select screen click on the OneWorldFolder icon next to the Singleplayer button.
 
 ## Default Config
-By default one world folder will automatically detect the default `saves` folder located in `.minecraft`. The generated default config looks like this:
+By default one world folder will automatically detect the default `saves` folder located in `.minecraft`. This can be changed in the config. The generated default config looks like this:
 ```json
 {
 	"external_saves_directory": "--auto-detect",
@@ -18,6 +11,13 @@ By default one world folder will automatically detect the default `saves` folder
 	"replace_owf_and_singleplayer_button": false
 }
 ```
+
+## Config Location
+There are two possible locations for this config file:
+- `.minecraft/config/oneworldfolder/oneworldfolder.json`
+- `currentMinecraftInstanceFolder/config/oneworldfolder/oneworldfolder.json`
+
+The config with the highest priority will be used.
 
 ## Custom external `saves` folder
 To use a custom saves folder set `external_saves_directory` to your desired directory:
