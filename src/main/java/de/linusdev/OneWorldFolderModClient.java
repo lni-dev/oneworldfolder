@@ -3,7 +3,6 @@ package de.linusdev;
 import com.mojang.logging.LogUtils;
 import de.linusdev.data.parser.exceptions.ParseException;
 import de.linusdev.mixin.client.MinecraftClientAccessor;
-import de.linusdev.mixin.client.TitleScreenMixin;
 import de.linusdev.oneworldfolder.ITitleScreenMixin;
 import de.linusdev.oneworldfolder.config.Config;
 import net.fabricmc.api.ClientModInitializer;

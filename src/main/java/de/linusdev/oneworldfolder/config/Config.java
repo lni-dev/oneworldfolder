@@ -24,7 +24,10 @@ public class Config {
 
     public static final String EXTERNAL_SAVES_DIR_KEY = "external_saves_directory";
     public static final String AUTO_DETECT = "--auto-detect";
+
     public static final String PRIORITY_KEY = "priority";
+
+    public static final String SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY = "replace_owf_and_singleplayer_button";
 
     public static @NotNull Config from(@Nullable Path @NotNull ... locations) throws IOException, ParseException {
         Config highestPriority = null;
@@ -38,6 +41,7 @@ public class Config {
 
             if(Files.exists(configFile)) {
                 Config c = new Config(configFile);
+                c.store(); // add missing fields
 
                 if(highestPriority == null || highestPriority.getPriority() < c.getPriority()) {
                     highestPriority = c;
@@ -64,11 +68,12 @@ public class Config {
     private final Path externalMinecraftDirectory;
     private final String externalSavesDirName;
     private final int priority;
+    private final boolean swapOwfButtonAndSingleplayerButton;
 
     public Config(@NotNull Path configFile) throws IOException, ParseException {
         this.configFile = configFile;
 
-        SOData data = SOData.newOrderedDataWithKnownSize(1);
+        SOData data = SOData.newOrderedDataWithKnownSize(10);
         if(Files.exists(configFile))
             data = JSON_PARSER.parseStream(Files.newInputStream(configFile));
 
@@ -89,6 +94,7 @@ public class Config {
         externalMinecraftDirectory = externalSavesDir == null ? null : externalSavesDir.getParent();
         externalSavesDirName = externalSavesDir == null ? null : externalSavesDir.getFileName().toString();
         priority = data.getNumberAsInt(PRIORITY_KEY, key -> -1);
+        swapOwfButtonAndSingleplayerButton = (boolean) data.getOrDefaultBoth(SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY, false);
 
 
         supportsCustomLevelStorage = !(externalMinecraftDirectory == null || !Files.exists(externalMinecraftDirectory));
@@ -112,6 +118,10 @@ public class Config {
         return externalSavesDirName;
     }
 
+    public boolean isSwapOwfButtonAndSingleplayerButton() {
+        return swapOwfButtonAndSingleplayerButton;
+    }
+
     public int getPriority() {
         return priority;
     }
@@ -132,10 +142,10 @@ public class Config {
         );
 
         data.add(PRIORITY_KEY, priority);
+        data.add(SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY, swapOwfButtonAndSingleplayerButton);
 
         Writer writer = Files.newBufferedWriter(configFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
         JSON_PARSER.writeData(writer, data);
-        System.out.println(JSON_PARSER.writeDataToString(data));
         writer.close();
         return this;
     }
