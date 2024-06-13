@@ -27,7 +27,9 @@ public class Config {
 
     public static final String PRIORITY_KEY = "priority";
 
-    public static final String SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY = "replace_owf_and_singleplayer_button";
+    public static final String SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_OLD_KEY = "replace_owf_and_singleplayer_button";
+    public static final String SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY = "swap_owf_and_singleplayer_button";
+    public static final String REPLACE_SINGLEPLAYER_BUTTON_KEY = "replace_singleplayer_button";
 
     public static @NotNull Config from(@Nullable Path @NotNull ... locations) throws IOException, ParseException {
         Config highestPriority = null;
@@ -69,6 +71,7 @@ public class Config {
     private final String externalSavesDirName;
     private final int priority;
     private final boolean swapOwfButtonAndSingleplayerButton;
+    private final boolean replaceSingleplayerButton;
 
     public Config(@NotNull Path configFile) throws IOException, ParseException {
         this.configFile = configFile;
@@ -94,8 +97,9 @@ public class Config {
         externalMinecraftDirectory = externalSavesDir == null ? null : externalSavesDir.getParent();
         externalSavesDirName = externalSavesDir == null ? null : externalSavesDir.getFileName().toString();
         priority = data.getNumberAsInt(PRIORITY_KEY, key -> -1);
-        swapOwfButtonAndSingleplayerButton = (boolean) data.getOrDefaultBoth(SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY, false);
-
+        boolean oldSwapOwfButtonAndSingleplayerButton = (boolean) data.getOrDefaultBoth(SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_OLD_KEY, false);
+        swapOwfButtonAndSingleplayerButton = (boolean) data.getOrDefaultBoth(SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY, oldSwapOwfButtonAndSingleplayerButton);
+        replaceSingleplayerButton = (boolean) data.getOrDefaultBoth(REPLACE_SINGLEPLAYER_BUTTON_KEY, false);
 
         supportsCustomLevelStorage = !(externalMinecraftDirectory == null || !Files.exists(externalMinecraftDirectory));
         cannotFindMinecraftFolder = externalMinecraftDirectory == null;
@@ -122,6 +126,10 @@ public class Config {
         return swapOwfButtonAndSingleplayerButton;
     }
 
+    public boolean isReplaceSingleplayerButton() {
+        return replaceSingleplayerButton;
+    }
+
     public int getPriority() {
         return priority;
     }
@@ -143,6 +151,7 @@ public class Config {
 
         data.add(PRIORITY_KEY, priority);
         data.add(SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY, swapOwfButtonAndSingleplayerButton);
+        data.add(REPLACE_SINGLEPLAYER_BUTTON_KEY, replaceSingleplayerButton);
 
         Writer writer = Files.newBufferedWriter(configFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
         JSON_PARSER.writeData(writer, data);

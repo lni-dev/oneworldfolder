@@ -32,14 +32,29 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
             if(c instanceof ButtonWidget b) {
                 if(b.getMessage().equals(singlePlayerText)) {
 
-                    b.setWidth(b.getWidth() - 24);
+                    if(!OneWorldFolderModClient.config.isReplaceSingleplayerButton())
+                        b.setWidth(b.getWidth() - 24); // Change width, if we need to draw a second button next
+                                                       // to the single player btn
+
                     x = b.getX() + b.getWidth() + 4;
                     y = b.getY();
 
-                    if(OneWorldFolderModClient.config.isSwapOwfButtonAndSingleplayerButton()) {
+                    if(OneWorldFolderModClient.config.isReplaceSingleplayerButton()) {
                         this.addDrawableChild(
-                                ButtonWidget
-                                        .builder(
+                                TextIconButtonWidget.builder(
+                                                Text.translatable("menu.singleplayer"),
+                                                (button) -> openMyWorldSelectScreen(true),
+                                                false
+                                        )
+                                        .texture(OneWorldFolderModClient.OWF_ICON_ID, 18, 18)
+                                        .dimension(b.getWidth(), b.getHeight())
+                                        .build()
+                        ).setPosition(b.getX(), b.getY());
+                        this.remove(b);
+
+                    } else if(OneWorldFolderModClient.config.isSwapOwfButtonAndSingleplayerButton()) {
+                        this.addDrawableChild(
+                                ButtonWidget.builder(
                                                 Text.translatable("menu.singleplayer"),
                                                 (button) -> openMyWorldSelectScreen(true)
                                         )
@@ -51,8 +66,8 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                         )
                                         .build()
                         );
-
                         this.remove(b);
+
                     }
 
                     break;
@@ -60,32 +75,35 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
             }
         }
 
-        if(OneWorldFolderModClient.config.isSwapOwfButtonAndSingleplayerButton()) {
-            //add one world folder button
-            Identifier owfIconId = new Identifier("oneworldfolder", "icon/no-small-owf-icon-1024");
-            this.addDrawableChild(
-                    TextIconButtonWidget.builder(
-                                    Text.of(""),
-                                    (button) -> this.client.setScreen(new SelectWorldScreen(this)),
-                                    true
-                            )
-                            .width(20)
-                            .texture(owfIconId, 18, 18)
-                            .build()
-            ).setPosition(x, y);
-        } else {
-            //add one world folder button
-            Identifier owfIconId = new Identifier("oneworldfolder", "icon/owf-icon-1024");
-            this.addDrawableChild(
-                    TextIconButtonWidget.builder(
-                                    Text.of(""),
-                                    (button) -> openMyWorldSelectScreen(true),
-                                    true
-                            )
-                            .width(20)
-                            .texture(owfIconId, 18, 18)
-                            .build()
-            ).setPosition(x, y);
+        if(!OneWorldFolderModClient.config.isReplaceSingleplayerButton()) {
+            // We need a secondary button.
+
+            if(OneWorldFolderModClient.config.isSwapOwfButtonAndSingleplayerButton()) {
+                //add no-one-world-folder button
+                this.addDrawableChild(
+                        TextIconButtonWidget.builder(
+                                        Text.of(""),
+                                        (button) -> this.client.setScreen(new SelectWorldScreen(this)),
+                                        true
+                                )
+                                .width(20)
+                                .texture(OneWorldFolderModClient.NO_SMALL_OWF_ICON_ID, 18, 18)
+                                .build()
+                ).setPosition(x, y);
+            } else {
+                //add one-world-folder button
+                this.addDrawableChild(
+                        TextIconButtonWidget.builder(
+                                        Text.of(""),
+                                        (button) -> openMyWorldSelectScreen(true),
+                                        true
+                                )
+                                .width(20)
+                                .texture(OneWorldFolderModClient.OWF_ICON_ID, 18, 18)
+                                .build()
+                ).setPosition(x, y);
+            }
+
         }
     }
 

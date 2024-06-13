@@ -20,7 +20,9 @@ import java.nio.file.Paths;
 
 public class OneWorldFolderModClient implements ClientModInitializer {
 
-	public static final Identifier OWF_TITLE_SCREEN_IDENTIFIER = new Identifier("oneworldfolder", "titlescreen");
+	public static final Identifier OWF_TITLE_SCREEN_IDENTIFIER = Identifier.of("oneworldfolder", "titlescreen");
+	public static final Identifier OWF_ICON_ID = Identifier.of("oneworldfolder", "icon/owf-icon-1024");
+	public static final Identifier NO_SMALL_OWF_ICON_ID = Identifier.of("oneworldfolder", "icon/no-small-owf-icon-1024");
 
 	public static LevelStorage customLevelStorage;
 	public static boolean useCustomLevelStorage;
