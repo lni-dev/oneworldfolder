@@ -6,9 +6,13 @@
     "MinecraftClientAccessor",
     "MinecraftClientMixin",
     "SelectWorldScreenMixin",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "ResourcePackManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-	}
+  },
+  "mixins": [
+
+  ]
 }

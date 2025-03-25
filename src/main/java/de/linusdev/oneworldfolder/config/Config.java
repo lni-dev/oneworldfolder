@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 public class Config {
     public static final @NotNull JsonParser JSON_PARSER = new JsonParser();
@@ -30,6 +31,7 @@ public class Config {
     public static final String SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_OLD_KEY = "replace_owf_and_singleplayer_button";
     public static final String SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY = "swap_owf_and_singleplayer_button";
     public static final String REPLACE_SINGLEPLAYER_BUTTON_KEY = "replace_singleplayer_button";
+    public static final String ADDITIONAL_PACKS_DIRS_KEY = "additional_resourcepacks_dirs";
 
     public static @NotNull Config from(@Nullable Path @NotNull ... locations) throws IOException, ParseException {
         Config highestPriority = null;
@@ -72,6 +74,7 @@ public class Config {
     private final int priority;
     private final boolean swapOwfButtonAndSingleplayerButton;
     private final boolean replaceSingleplayerButton;
+    private final List<String> additionalPackDirs;
 
     public Config(@NotNull Path configFile) throws IOException, ParseException {
         this.configFile = configFile;
@@ -103,6 +106,12 @@ public class Config {
 
         supportsCustomLevelStorage = !(externalMinecraftDirectory == null || !Files.exists(externalMinecraftDirectory));
         cannotFindMinecraftFolder = externalMinecraftDirectory == null;
+
+        if(data.get(ADDITIONAL_PACKS_DIRS_KEY) != null) {
+            additionalPackDirs = data.getContainer(ADDITIONAL_PACKS_DIRS_KEY).asList().<String>cast().get();
+        } else {
+            additionalPackDirs = List.of();
+        }
 
     }
 
@@ -138,6 +147,10 @@ public class Config {
         return configFile;
     }
 
+    public List<String> getAdditionalPackDirs() {
+        return additionalPackDirs;
+    }
+
     public Config store() throws IOException {
         if(!Files.exists(configFile.getParent()))
             Files.createDirectories(configFile.getParent());
@@ -152,6 +165,7 @@ public class Config {
         data.add(PRIORITY_KEY, priority);
         data.add(SWAP_OWF_BUTTON_AND_SINGLEPLAYER_BUTTON_KEY, swapOwfButtonAndSingleplayerButton);
         data.add(REPLACE_SINGLEPLAYER_BUTTON_KEY, replaceSingleplayerButton);
+        data.add(ADDITIONAL_PACKS_DIRS_KEY, additionalPackDirs);
 
         Writer writer = Files.newBufferedWriter(configFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
         JSON_PARSER.writeData(writer, data);

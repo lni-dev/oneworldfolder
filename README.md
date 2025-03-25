@@ -24,12 +24,29 @@ The config with the highest priority will be used.
 To use a custom saves folder set `external_saves_directory` to your desired directory:
 ```json
 {
-	"external_saves_directory": "C:/Users/username/mycoolsaves",
-	"priority": -1,
-	"swap_owf_and_singleplayer_button": false,
-	"replace_singleplayer_button": false
+    "external_saves_directory": "C:/Users/username/mycoolsaves",
+    "priority": -1,
+    "swap_owf_and_singleplayer_button": false,
+    "replace_singleplayer_button": false,
+    "additional_resourcepacks_dirs": []
 }
 ```
+
+## Custom external `resourcepacks` folder
+To use a custom resourcepacks folder add your desired directory to `additional_resourcepacks_dirs`:
+```json
+{
+    "external_saves_directory": "C:/Users/username/mycoolsaves",
+    "priority": -1,
+    "swap_owf_and_singleplayer_button": false,
+    "replace_singleplayer_button": false,
+    "additional_resourcepacks_dirs": [
+        "C:/Users/username/mycoolresourcepacks"
+    ]
+}
+```
+In the above example the `mycoolresourcepacks` folder acts exactly as the `resourcepacks` folder of your Minecraft
+instance.
 
 ## Other Config Options
 - `swap_owf_and_singleplayer_button` (since v. 1.0.8): The single player button now

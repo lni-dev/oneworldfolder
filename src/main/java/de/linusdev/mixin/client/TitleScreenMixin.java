@@ -23,6 +23,8 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
 
     @Unique
     public void oneworldfolder$addCustomButton() {
+        if(OneWorldFolderModClient.config == null) return;
+
         //reduce size of the singlePlayer button
         int x = 0;
         int y = 0;

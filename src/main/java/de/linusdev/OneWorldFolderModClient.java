@@ -25,15 +25,22 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 	public static final Identifier NO_SMALL_OWF_ICON_ID = Identifier.of("oneworldfolder", "icon/no-small-owf-icon-1024");
 
 	public static LevelStorage customLevelStorage;
-	public static boolean useCustomLevelStorage;
+	public static boolean useCustomLevelStorage = false;
 
-	public static Config config;
+	public static Config config = reloadConfig();
 
 	@Override
 	public void onInitializeClient() {
-		useCustomLevelStorage = false;
-		reloadConfig();
+		if(config == null) return;
 
+		if(config.isSupportsCustomLevelStorage()) {
+			customLevelStorage = new LevelStorage(
+					config.getExternalMinecraftDirectory().resolve(config.getExternalSavesDirName()),
+					config.getExternalMinecraftDirectory().resolve("backups"),
+					LevelStorage.createSymlinkFinder(config.getExternalMinecraftDirectory().resolve("allowed_symlinks.txt")),
+					((MinecraftClientAccessor)MinecraftClient.getInstance()).getDataFixer()
+			);
+		}
 
 		ScreenEvents.AFTER_INIT.register(OWF_TITLE_SCREEN_IDENTIFIER, (client, screen, scaledWidth, scaledHeight) -> {
 			if(screen instanceof TitleScreen) {
@@ -43,20 +50,12 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 		ScreenEvents.AFTER_INIT.addPhaseOrdering(Event.DEFAULT_PHASE, OWF_TITLE_SCREEN_IDENTIFIER);
 	}
 
-	public static void reloadConfig() {
+	public static Config reloadConfig() {
 		try {
-			config = Config.from(getDefaultMinecraftFolder(), MinecraftClient.getInstance().runDirectory.toPath());
+			return config = Config.from(getDefaultMinecraftFolder(), MinecraftClient.getInstance().runDirectory.toPath());
 		} catch (IOException | ParseException e) {
-			LogUtils.getLogger().error("Cannot find external saves folder: " + e.getMessage());
-		}
-
-		if(config.isSupportsCustomLevelStorage()) {
-			customLevelStorage = new LevelStorage(
-					config.getExternalMinecraftDirectory().resolve(config.getExternalSavesDirName()),
-					config.getExternalMinecraftDirectory().resolve("backups"),
-					LevelStorage.createSymlinkFinder(config.getExternalMinecraftDirectory().resolve("allowed_symlinks.txt")),
-					((MinecraftClientAccessor)MinecraftClient.getInstance()).getDataFixer()
-			);
+            LogUtils.getLogger().error("Cannot Load config: {}", e.getMessage());
+			return null;
 		}
 	}
 
