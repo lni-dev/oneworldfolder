@@ -32,7 +32,7 @@ To use a custom saves folder set `external_saves_directory` to your desired dire
 }
 ```
 
-## Custom external `resourcepacks` folder
+## Custom external `resourcepacks` folder (since v. 1.0.13)
 To use a custom resourcepacks folder add your desired directory to `additional_resourcepacks_dirs`:
 ```json
 {
