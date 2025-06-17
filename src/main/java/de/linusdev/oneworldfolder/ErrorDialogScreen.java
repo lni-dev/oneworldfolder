@@ -3,8 +3,7 @@ package de.linusdev.oneworldfolder;
 import com.google.common.collect.ImmutableList;
 import de.linusdev.OneWorldFolderModClient;
 import de.linusdev.oneworldfolder.config.Config;
-import net.minecraft.client.gui.screen.DialogScreen;
-import net.minecraft.client.gui.screen.option.OptionsScreen;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
@@ -12,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ErrorDialogScreen extends DialogScreen {
+public class ErrorDialogScreen extends ConfirmScreen {
 
     public ErrorDialogScreen(@Nullable ButtonWidget.PressAction action) {
         super(
