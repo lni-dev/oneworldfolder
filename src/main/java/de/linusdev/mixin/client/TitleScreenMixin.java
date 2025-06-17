@@ -119,7 +119,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                 return;
             }
 
-            this.client.setScreen(new ErrorDialogScreen(button -> this.client.setScreen(this)));
+            this.client.setScreen(new ErrorDialogScreen(() -> this.client.setScreen(this)));
             return;
         }
 
