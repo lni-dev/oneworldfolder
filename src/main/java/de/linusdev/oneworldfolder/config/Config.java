@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.Map;
 
 public class Config {
     public static final @NotNull JsonParser JSON_PARSER = new JsonParser();
@@ -92,7 +93,7 @@ public class Config {
                         return md == null ? null : md.resolve("saves");
                     }
 
-                    return Paths.get(string);
+                    return Paths.get(expandEnvVars(string));
 
                 })
                 .get();
@@ -113,6 +114,17 @@ public class Config {
             additionalPackDirs = List.of();
         }
 
+    }
+
+    // Source: https://stackoverflow.com/a/15365315/23894947
+    private static Map<String, String> envMap = System.getenv();
+    public static String expandEnvVars(String text) {
+       for (Map.Entry<String, String> entry : envMap.entrySet()) {
+           String key = entry.getKey();
+           String value = entry.getValue();
+           text = text.replaceAll("\\$\\{" + key + "\\}", value);
+       }
+       return text;
     }
 
     public boolean isSupportsCustomLevelStorage() {
