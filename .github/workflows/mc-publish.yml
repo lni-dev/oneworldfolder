@@ -1,0 +1,60 @@
+
+
+name: Publish on GitHub, CurseForge & Modrinth
+
+on: [ workflow_dispatch ]
+
+env:
+  MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
+  CURSEFORGE_TOKEN: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Environment Variables
+        run: env
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Read gradle.properties
+        uses: BrycensRanch/read-properties-action@latest
+        id: props
+        with:
+          file: gradle.properties
+          all: true
+
+      - name: Format versions for matrix
+        id: versions
+        run: |
+          echo "GAME_VERSIONS<<EOF" >> $GITHUB_OUTPUT
+          echo "${{ steps.props.outputs.additional_supported_mc_versions }}" | tr ',' '\n' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Print versions
+        run: |
+          echo "Formatted versions:"
+          echo "${{ steps.versions.outputs.GAME_VERSIONS }}"
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew clean build
+
+
+
