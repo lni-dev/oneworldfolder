@@ -25,7 +25,7 @@ jobs:
           submodules: true
 
       - name: Read gradle.properties
-        uses: BrycensRanch/read-properties-action@latest
+        uses: BrycensRanch/read-properties-action@v1.0.4
         id: props
         with:
           file: gradle.properties
@@ -56,5 +56,26 @@ jobs:
       - name: Build
         run: ./gradlew clean build
 
+      - name: Publish (CurseForge/Modrinth/GitHub)
+        uses: Kir-Antipov/mc-publish@v3.2
+        with:
+          curseforge-id: 956372
+          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
 
+          modrinth-id: JL35Xbzz
+          modrinth-token: "${{env.MODRINTH_TOKEN}}"
+
+          github-tag: "v. ${{ steps.props.outputs.mod_version }}"
+          github-token: "${{env.GITHUB_TOKEN}}"
+
+          name: "OneWorldFolder"
+          version: "${{ steps.props.outputs.mod_version }}"
+          version-type: release
+          changelog-file: CHANGELOG.md
+
+          loaders: fabric
+          game-versions: |
+            ${{ steps.props.outputs.minecraft_version }}
+            ${{ steps.versions.outputs.GAME_VERSIONS }}
+          java: "17"
 
