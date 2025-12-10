@@ -68,7 +68,7 @@ jobs:
           github-tag: "v. ${{ steps.props.outputs.mod_version }}"
           github-token: "${{env.GITHUB_TOKEN}}"
 
-          name: "OneWorldFolder"
+          name: "OneWorldFolder ${{ steps.props.outputs.mod_version }}"
           version: "${{ steps.props.outputs.mod_version }}"
           version-type: release
           changelog-file: CHANGELOG.md
