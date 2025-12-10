@@ -65,9 +65,6 @@ jobs:
           modrinth-id: JL35Xbzz
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
 
-          github-tag: "v. ${{ steps.props.outputs.mod_version }}"
-          github-token: "${{env.GITHUB_TOKEN}}"
-
           name: "OneWorldFolder ${{ steps.props.outputs.mod_version }}"
           version: "${{ steps.props.outputs.mod_version }}"
           version-type: release
