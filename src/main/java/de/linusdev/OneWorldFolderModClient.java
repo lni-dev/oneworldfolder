@@ -54,7 +54,7 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 		try {
 			return config = Config.from(getDefaultMinecraftFolder(), MinecraftClient.getInstance().runDirectory.toPath());
 		} catch (IOException | ParseException e) {
-            LogUtils.getLogger().error("Cannot Load config: {}", e.getMessage());
+				LogUtils.getLogger().error("Cannot Load config: {}", e.getMessage());
 			return null;
 		}
 	}
@@ -63,13 +63,11 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 		String OS = System.getProperty("os.name").toLowerCase();
 
 		if (OS.contains("win")) {
-			return Paths.get(System.getProperty("user.home"), "AppData", "Roaming", ".minecraft");
+			return Paths.get(System.getenv("APPDATA"), ".minecraft");
 		} else if (OS.contains("nix") || OS.contains("nux")) {
 			return Paths.get(System.getProperty("user.home"), ".minecraft");
 		} else {
 			return null;
 		}
 	}
-
-
 }
