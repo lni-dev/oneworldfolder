@@ -116,6 +116,19 @@ public class Config {
 
     }
 
+    public @NotNull String getDebugString() {
+        String debug = "Config debug info:";
+        debug += "\nconfig location: " + configFile;
+        debug += "\nexternalMinecraftDirectory: " + externalMinecraftDirectory;
+        debug += "\nexists(externalMinecraftDirectory): " + Files.exists(externalMinecraftDirectory);
+        debug += "\nexternalSavesDirName: " + externalSavesDirName;
+        debug += "\nsupportsCustomLevelStorage: " + supportsCustomLevelStorage;
+        debug += "\ncannotFindMinecraftFolder: " + cannotFindMinecraftFolder;
+        debug += "\nadditionalPackDirs: " + additionalPackDirs;
+
+        return debug;
+    }
+
     // Source: https://stackoverflow.com/a/15365315/23894947
     private static Map<String, String> envMap = System.getenv();
     public static String expandEnvVars(String text) {

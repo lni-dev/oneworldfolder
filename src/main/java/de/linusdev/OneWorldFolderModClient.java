@@ -13,6 +13,8 @@ import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -23,6 +25,8 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 	public static final Identifier OWF_TITLE_SCREEN_IDENTIFIER = Identifier.of("oneworldfolder", "titlescreen");
 	public static final Identifier OWF_ICON_ID = Identifier.of("oneworldfolder", "icon/owf-icon-1024");
 	public static final Identifier NO_SMALL_OWF_ICON_ID = Identifier.of("oneworldfolder", "icon/no-small-owf-icon-1024");
+
+    public static final Logger LOG = LoggerFactory.getLogger("oneworldfolder");
 
 	public static LevelStorage customLevelStorage;
 	public static boolean useCustomLevelStorage = false;

@@ -10,7 +10,6 @@ import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextIconButtonWidget;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -119,6 +118,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                 return;
             }
 
+            OneWorldFolderModClient.LOG.error("One world folder error :( {}", OneWorldFolderModClient.config.getDebugString());
             this.client.setScreen(new ErrorDialogScreen(() -> this.client.setScreen(this)));
             return;
         }
