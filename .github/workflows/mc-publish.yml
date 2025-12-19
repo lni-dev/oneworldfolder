@@ -64,6 +64,8 @@ jobs:
 
           modrinth-id: JL35Xbzz
           modrinth-token: "${{env.MODRINTH_TOKEN}}"
+          modrinth-featured: false
+          modrinth-unfeature-mode: none
 
           name: "OneWorldFolder ${{ steps.props.outputs.mod_version }}"
           version: "${{ steps.props.outputs.mod_version }}"
