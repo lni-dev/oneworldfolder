@@ -1,3 +1,1 @@
-- Updated to minecraft 1.21.11
-- Locate default Minecraft directory on Windows using APPDATA variable
-- Added an option to use environmental variables in 'external_saves_directory' with \$\{VAR\}
+- Added some debug logging in error cases
