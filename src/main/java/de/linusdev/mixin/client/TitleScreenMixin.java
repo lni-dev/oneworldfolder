@@ -47,7 +47,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                                 (button) -> openMyWorldSelectScreen(true),
                                                 false
                                         )
-                                        .texture(OneWorldFolderModClient.OWF_ICON_ID, 18, 18)
+                                        .texture(OneWorldFolderModClient.OWF_ICON_ID, 16, 16)
                                         .dimension(b.getWidth(), b.getHeight())
                                         .build()
                         ).setPosition(b.getX(), b.getY());
@@ -88,7 +88,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                         true
                                 )
                                 .width(20)
-                                .texture(OneWorldFolderModClient.NO_SMALL_OWF_ICON_ID, 18, 18)
+                                .texture(OneWorldFolderModClient.NO_SMALL_OWF_ICON_ID, 16, 16)
                                 .build()
                 ).setPosition(x, y);
             } else {
@@ -100,7 +100,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                         true
                                 )
                                 .width(20)
-                                .texture(OneWorldFolderModClient.OWF_ICON_ID, 18, 18)
+                                .texture(OneWorldFolderModClient.OWF_ICON_ID, 16, 16)
                                 .build()
                 ).setPosition(x, y);
             }
