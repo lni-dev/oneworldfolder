@@ -1,1 +1,2 @@
-- Added some debug logging in error cases
+- New Icon for the mod
+- Auto-detect should work on Mac Os now (untested)
