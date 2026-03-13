@@ -110,9 +110,6 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
 
     @Unique
     public void openMyWorldSelectScreen(boolean tryReload) {
-        this.client.setScreen(new ErrorDialogScreen(() -> this.client.setScreen(this)));
-        if(true)
-            return;
         if(!OneWorldFolderModClient.config.isSupportsCustomLevelStorage()) {
 
             if(tryReload) {

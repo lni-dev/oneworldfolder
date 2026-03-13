@@ -1,2 +1,1 @@
-- New Icon for the mod
-- New error msg on Linux
+- Hotfix update
