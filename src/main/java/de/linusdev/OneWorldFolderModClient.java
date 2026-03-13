@@ -63,12 +63,17 @@ public class OneWorldFolderModClient implements ClientModInitializer {
 		}
 	}
 
+	public static boolean isLinux() {
+		String OS = System.getProperty("os.name").toLowerCase();
+		return OS.contains("nix") || OS.contains("nux");
+	}
+
 	public static @Nullable Path getDefaultMinecraftFolder() {
 		String OS = System.getProperty("os.name").toLowerCase();
 
 		if (OS.contains("win")) {
 			return Paths.get(System.getenv("APPDATA"), ".minecraft");
-		} else if (OS.contains("nix") || OS.contains("nux")) {
+		} else if (isLinux()) {
 			return Paths.get(System.getProperty("user.home"), ".minecraft");
 		} else if (OS.contains("mac")) {
 			return Paths.get(System.getProperty("user.home"), "Library", "Application Support", "minecraft");

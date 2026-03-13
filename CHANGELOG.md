@@ -1,2 +1,2 @@
 - New Icon for the mod
-- Auto-detect should work on Mac Os now (untested)
+- New error msg on Linux

@@ -22,7 +22,12 @@ public class ErrorDialogScreen extends ConfirmScreen {
                 OneWorldFolderModClient.config.isCannotFindMinecraftFolder() ?
                         Text.of("Cannot auto detect '.minecraft' directory. You can manually set your custom 'saves' folder in the \n'" + Config.OWF_CONFIG_FILE_NAME + "'\nconfig file.") :
                         Text.of("\nMinecraft directory \n'" + OneWorldFolderModClient.config.getExternalMinecraftDirectory()
-                                + "'\ncannot be found.\nYou can set a custom save path in the config file located in \n'" + OneWorldFolderModClient.config.getConfigFile() + "'."),
+                                + "'\ncannot be found.\n\nYou can set a custom save path in the config file located in \n'" + OneWorldFolderModClient.config.getConfigFile() + "'." + (
+                                OneWorldFolderModClient.isLinux()
+                                        ?
+                                        ("\n\nIf you are on Linux, this might be a permission related issue (See https://github.com/lni-dev/oneworldfolder/issues/7)")
+                                        : "")
+                        ),
                 Text.of("            okay :(            "),
                 Text.of("Open Config File")
         );

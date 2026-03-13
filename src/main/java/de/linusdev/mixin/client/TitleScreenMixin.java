@@ -47,7 +47,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                                 (button) -> openMyWorldSelectScreen(true),
                                                 false
                                         )
-                                        .texture(OneWorldFolderModClient.OWF_ICON_ID, 16, 16)
+                                        .texture(OneWorldFolderModClient.OWF_ICON_ID, 15, 15)
                                         .dimension(b.getWidth(), b.getHeight())
                                         .build()
                         ).setPosition(b.getX(), b.getY());
@@ -88,7 +88,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                         true
                                 )
                                 .width(20)
-                                .texture(OneWorldFolderModClient.NO_SMALL_OWF_ICON_ID, 16, 16)
+                                .texture(OneWorldFolderModClient.NO_SMALL_OWF_ICON_ID, 15, 15)
                                 .build()
                 ).setPosition(x, y);
             } else {
@@ -100,7 +100,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                         true
                                 )
                                 .width(20)
-                                .texture(OneWorldFolderModClient.OWF_ICON_ID, 16, 16)
+                                .texture(OneWorldFolderModClient.OWF_ICON_ID, 15, 15)
                                 .build()
                 ).setPosition(x, y);
             }
@@ -110,6 +110,9 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
 
     @Unique
     public void openMyWorldSelectScreen(boolean tryReload) {
+        this.client.setScreen(new ErrorDialogScreen(() -> this.client.setScreen(this)));
+        if(true)
+            return;
         if(!OneWorldFolderModClient.config.isSupportsCustomLevelStorage()) {
 
             if(tryReload) {
