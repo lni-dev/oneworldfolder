@@ -1,9 +1,6 @@
 plugins {
-	id 'fabric-loom' version '1.15-SNAPSHOT'
+	id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
 	id 'maven-publish'
-	id "com.modrinth.minotaur" version "2.+"
-	id 'com.matthewprenger.cursegradle' version '1.4.0'
-	id 'com.gradleup.shadow' version '9.3.0'
 }
 
 version = project.mod_version
@@ -37,53 +34,16 @@ loom {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
-	// Uncomment the following line to enable the deprecated Fabric API modules. 
-	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
-	shadow(implementation("de.linusdev:lutils:2.0.0"))
-	shadow(implementation("de.linusdev:data:2.2.1"))
-
-
+	implementation("de.linusdev:lutils:2.0.0")
+	implementation("de.linusdev:data:2.2.1")
+	include("de.linusdev:lutils:2.0.0")
+	include("de.linusdev:data:2.2.1")
 }
-
-/*if(project.hasProperty("modrinthToken")) {
-	modrinth {
-		token = modrinthToken // Please use an environment variable for this! The default is `$MODRINTH_TOKEN`.
-		projectId = 'JL35Xbzz' // The ID of your Modrinth project. Slugs will not work.
-		versionNumber = mod_version // The (preferably SemVer) version of the mod. If not specified, it'll use the `version` declaration
-		versionName = 'OneWorldFolder' // The version title. If not specified, it'll use the version number
-		uploadFile = remapJar // Tells Minotaur to use the remapped jar
-		gameVersions = supp_mc_versions // An array of game versions the version supports
-		loaders = ['fabric'] // Self-explanatory.
-		changelog = project.changelog
-	}
-}
-
-if(project.hasProperty("curseForgeToken")) {
-	curseforge {
-		apiKey = curseForgeToken
-		project {
-			id = '956372'
-			releaseType = 'release'
-			changelog = project.changelog
-			for (final def v in supp_mc_versions)
-				addGameVersion(v)
-			addGameVersion("Fabric")
-
-			mainArtifact(remapJar) {
-				displayName = "One World Folder Fabric $minecraft_version $mod_version"
-			}
-		}
-	}
-}*/
-
 
 processResources {
 	inputs.property "version", project.version
@@ -116,19 +76,7 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}
-	archiveClassifier.set("dev")
-}
-
-shadowJar {
-	configurations = [project.configurations.shadow]
-	archiveClassifier.set("dev")
-}
-
-remapJar {
-	dependsOn(shadowJar)
 	archiveClassifier.set(minecraft_version)
-
-	inputFile = tasks.shadowJar.archiveFile.get()
 }
 
 // configure the maven publication
