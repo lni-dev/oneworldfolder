@@ -1,9 +1,9 @@
 package de.linusdev.mixin.client;
 
 import de.linusdev.OneWorldFolderModClient;
-import net.minecraft.resource.*;
-import net.minecraft.util.path.SymlinkFinder;
-import org.apache.commons.io.filefilter.SymbolicLinkFileFilter;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.*;
+import net.minecraft.world.level.validation.DirectoryValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.*;
@@ -16,32 +16,34 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Mixin(ResourcePackManager.class)
-public abstract class ResourcePackManagerMixin {
+
+
+@Mixin(PackRepository.class)
+public abstract class PackRepositoryMixin {
 	@Unique
 	private static final Logger LOGGER = LoggerFactory.getLogger("ResourcePackManagerMixin");
 
 	@Shadow
 	@Final
 	@Mutable
-    private Set<ResourcePackProvider> providers;
+    private Set<RepositorySource> sources;
 
 	@Shadow
-	private Map<String, ResourcePackProfile> profiles;
+	private Map<String, Pack> available;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	public void construct(ResourcePackProvider[] resourcePackProviders, CallbackInfo info) {
+	public void construct(RepositorySource[] resourcePackProviders, CallbackInfo info) {
 		// Use a LinkedHashSet to preserve ordering
-		providers = new LinkedHashSet<>(providers);
+		sources = new LinkedHashSet<>(sources);
 
 		if(OneWorldFolderModClient.config == null) return;
 
 		for (String additionalPackDir : OneWorldFolderModClient.config.getAdditionalPackDirs()) {
-			providers.add(new FileResourcePackProvider(
+			sources.add(new net.minecraft.server.packs.repository.FolderRepositorySource(
 					Paths.get(additionalPackDir),
-					ResourceType.CLIENT_RESOURCES,
-					ResourcePackSource.NONE,
-					new SymlinkFinder(path -> true)
+					PackType.CLIENT_RESOURCES,
+					PackSource.DEFAULT,
+					new DirectoryValidator(path -> true)
 			));
 		}
 

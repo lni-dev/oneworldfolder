@@ -4,19 +4,19 @@ import de.linusdev.OneWorldFolderModClient;
 import de.linusdev.oneworldfolder.ErrorDialogScreen;
 import de.linusdev.oneworldfolder.ITitleScreenMixin;
 import de.linusdev.oneworldfolder.MySelectWorldScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.world.SelectWorldScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextIconButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.SpriteIconButton;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen implements ITitleScreenMixin {
 
-    protected TitleScreenMixin(Text title) {
+    protected TitleScreenMixin(Component title) {
         super(title);
     }
 
@@ -27,10 +27,10 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
         //reduce size of the singlePlayer button
         int x = 0;
         int y = 0;
-        Text singlePlayerText = Text.translatable("menu.singleplayer");
+        Component singlePlayerText = Component.translatable("menu.singleplayer");
 
         for(var c : this.children()) {
-            if(c instanceof ButtonWidget b) {
+            if(c instanceof Button b) {
                 if(b.getMessage().equals(singlePlayerText)) {
 
                     if(!OneWorldFolderModClient.config.isReplaceSingleplayerButton())
@@ -41,25 +41,25 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                     y = b.getY();
 
                     if(OneWorldFolderModClient.config.isReplaceSingleplayerButton()) {
-                        this.addDrawableChild(
-                                TextIconButtonWidget.builder(
-                                                Text.translatable("menu.singleplayer"),
+                        this.addRenderableWidget(
+                                SpriteIconButton.builder(
+                                                Component.translatable("menu.singleplayer"),
                                                 (button) -> openMyWorldSelectScreen(true),
                                                 false
                                         )
-                                        .texture(OneWorldFolderModClient.OWF_ICON_ID, 15, 15)
-                                        .dimension(b.getWidth(), b.getHeight())
+                                        .sprite(OneWorldFolderModClient.OWF_ICON_ID, 15, 15)
+                                        .size(b.getWidth(), b.getHeight())
                                         .build()
                         ).setPosition(b.getX(), b.getY());
-                        this.remove(b);
+                        this.removeWidget(b);
 
                     } else if(OneWorldFolderModClient.config.isSwapOwfButtonAndSingleplayerButton()) {
-                        this.addDrawableChild(
-                                ButtonWidget.builder(
-                                                Text.translatable("menu.singleplayer"),
+                        this.addRenderableWidget(
+                                Button.builder(
+                                                Component.translatable("menu.singleplayer"),
                                                 (button) -> openMyWorldSelectScreen(true)
                                         )
-                                        .dimensions(
+                                        .bounds(
                                                 b.getX(),
                                                 b.getY(),
                                                 b.getWidth(),
@@ -67,7 +67,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                                         )
                                         .build()
                         );
-                        this.remove(b);
+                        this.removeWidget(b);
 
                     }
 
@@ -81,26 +81,26 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
 
             if(OneWorldFolderModClient.config.isSwapOwfButtonAndSingleplayerButton()) {
                 //add no-one-world-folder button
-                this.addDrawableChild(
-                        TextIconButtonWidget.builder(
-                                        Text.of(""),
-                                        (button) -> this.client.setScreen(new SelectWorldScreen(this)),
+                this.addRenderableWidget(
+                        SpriteIconButton.builder(
+                                        Component.literal(""),
+                                        (button) -> this.minecraft.setScreen(new SelectWorldScreen(this)),
                                         true
                                 )
                                 .width(20)
-                                .texture(OneWorldFolderModClient.NO_SMALL_OWF_ICON_ID, 15, 15)
+                                .sprite(OneWorldFolderModClient.NO_SMALL_OWF_ICON_ID, 15, 15)
                                 .build()
                 ).setPosition(x, y);
             } else {
                 //add one-world-folder button
-                this.addDrawableChild(
-                        TextIconButtonWidget.builder(
-                                        Text.of(""),
+                this.addRenderableWidget(
+                        SpriteIconButton.builder(
+                                        Component.literal(""),
                                         (button) -> openMyWorldSelectScreen(true),
                                         true
                                 )
                                 .width(20)
-                                .texture(OneWorldFolderModClient.OWF_ICON_ID, 15, 15)
+                                .sprite(OneWorldFolderModClient.OWF_ICON_ID, 15, 15)
                                 .build()
                 ).setPosition(x, y);
             }
@@ -119,11 +119,11 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
             }
 
             OneWorldFolderModClient.LOG.error("One world folder error :( {}", OneWorldFolderModClient.config.getDebugString());
-            this.client.setScreen(new ErrorDialogScreen(() -> this.client.setScreen(this)));
+            this.minecraft.setScreen(new ErrorDialogScreen(() -> this.minecraft.setScreen(this)));
             return;
         }
 
-        this.client.setScreen(new MySelectWorldScreen(this));
+        this.minecraft.setScreen(new MySelectWorldScreen(this));
 
     }
 }

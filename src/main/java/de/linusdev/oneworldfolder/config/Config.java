@@ -4,7 +4,7 @@ import de.linusdev.OneWorldFolderModClient;
 import de.linusdev.data.parser.JsonParser;
 import de.linusdev.data.parser.exceptions.ParseException;
 import de.linusdev.data.so.SOData;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public class Config {
             return highestPriority;
 
         return new Config(
-                MinecraftClient.getInstance().runDirectory.toPath()
+                Minecraft.getInstance().gameDirectory.toPath()
                         .resolve(CONFIG_DIR_NAME)
                         .resolve(OWF_CONFIG_DIR_NAME)
                         .resolve(OWF_CONFIG_FILE_NAME)

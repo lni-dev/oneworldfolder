@@ -3,11 +3,11 @@
   "package": "de.linusdev.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MinecraftClientAccessor",
-    "MinecraftClientMixin",
+    "MinecraftAccessor",
+    "MinecraftMixin",
     "SelectWorldScreenMixin",
     "TitleScreenMixin",
-    "ResourcePackManagerMixin"
+    "PackRepositoryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
