@@ -1,1 +1,1 @@
-- Hotfix update
+- Updated to minecraft 26.2

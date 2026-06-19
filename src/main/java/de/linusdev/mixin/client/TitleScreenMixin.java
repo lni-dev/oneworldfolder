@@ -84,7 +84,7 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
                 this.addRenderableWidget(
                         SpriteIconButton.builder(
                                         Component.literal(""),
-                                        (button) -> this.minecraft.setScreen(new SelectWorldScreen(this)),
+                                        (button) -> this.minecraft.setScreenAndShow(new SelectWorldScreen(this)),
                                         true
                                 )
                                 .width(20)
@@ -119,11 +119,11 @@ public abstract class TitleScreenMixin extends Screen implements ITitleScreenMix
             }
 
             OneWorldFolderModClient.LOG.error("One world folder error :( {}", OneWorldFolderModClient.config.getDebugString());
-            this.minecraft.setScreen(new ErrorDialogScreen(() -> this.minecraft.setScreen(this)));
+            this.minecraft.setScreenAndShow(new ErrorDialogScreen(() -> this.minecraft.setScreenAndShow(this)));
             return;
         }
 
-        this.minecraft.setScreen(new MySelectWorldScreen(this));
+        this.minecraft.setScreenAndShow(new MySelectWorldScreen(this));
 
     }
 }
